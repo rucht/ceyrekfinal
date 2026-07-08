@@ -110,11 +110,12 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .market-group:last-child { margin-bottom: 0; }
 .market-title { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; font-weight: 600; }
 .odds-row { display: flex; gap: 8px; }
-.odd-btn { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+.odd-btn { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; min-width: 0; }
 .odd-btn:hover { background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.4); }
 .odd-btn.selected { background: rgba(56,189,248,0.2); border-color: var(--accent-bet); box-shadow: inset 0 0 10px rgba(56,189,248,0.2); }
-.odd-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; text-align: center; line-height: 1.2; }
+.odd-label { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; text-align: center; line-height: 1.2; white-space: nowrap; }
 .odd-val { font-weight: 800; font-size: 0.95rem; color: #fff; }
+.odds-grid-3x3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 
 .slip-header { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: "Bebas Neue", sans-serif; font-size: 1.5rem; letter-spacing: 1px; color: var(--accent-bet); text-align: center; }
 .slip-body { padding: 16px; flex: 1; overflow-y: auto; max-height: 400px; display: flex; flex-direction: column; gap: 12px; }
@@ -211,6 +212,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 <div class="layout-wrapper" id="main-layout">
   <div class="main-content">
     
+    <!-- ÇEYREK FİNAL SİMÜLATÖRÜ -->
     <div class="page active" id="page-knockout">
       <div class="gs-title">ÇEYREK FİNAL MAÇLARI</div>
       <div class="gs-subtitle">Münih Saatine Göre (CEST) Ayarlanmıştır</div>
@@ -229,7 +231,8 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
         </div>
         
         <div class="choices" id="choices-wrapper">
-           </div>
+           <!-- Dynamically populated -->
+        </div>
 
         <div class="sim-box" id="sim-box">
           <div class="sim-scoreboard">
@@ -242,6 +245,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
       </div>
     </div>
 
+    <!-- BAHİS (BET) SAYFASI -->
     <div class="page" id="page-bet">
       <div class="bet-container">
         <div class="bet-main">
@@ -255,7 +259,8 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
           
           <div class="gs-title" style="color:var(--accent-bet); text-align:left; margin-bottom:20px;">ÇEYREK FİNAL BÜLTENİ</div>
           <div id="bet-matches-list">
-             </div>
+             <!-- Matches injected here -->
+          </div>
 
           <div class="my-bets-wrap">
             <div class="my-bets-title">Geçmiş Kuponlarım</div>
@@ -290,6 +295,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
       </div>
     </div>
 
+    <!-- SONUÇLAR VE LİDERLİK TABLOLARI -->
     <div class="page" id="page-results">
       <div class="results-page">
         <div class="result-wrap" id="my-result-wrap"></div>
@@ -361,30 +367,61 @@ const TEAM_RANKS = {
   "Belgium":9, "Switzerland":18, "Morocco":8, "Norway":28
 };
 
-// Realistic static odds generated based on team strengths
+// Gerçek görseldeki oranlarla güncellenmiş maçlar
 const CEYREK_MATCHES=[
   {
     id:"qf1", t1:"France", t2:"Morocco", date: "2026-07-09T22:00:00+02:00",
-    odds: { "1": 1.55, "X": 3.80, "2": 6.50, "u25": 1.75, "o25": 2.05, "u35": 1.25, "o35": 3.80, "kgv": 2.20, "kgy": 1.65 }
+    odds: { 
+      "1": 1.43, "X": 3.70, "2": 5.58, 
+      "u25": 1.67, "o25": 1.82, 
+      "kgv": 1.78, "kgy": 1.70,
+      "1/1": 2.37, "X/1": 4.33, "2/1": 23.00,
+      "1/X": 15.00, "X/X": 5.50, "2/X": 17.00,
+      "1/2": 41.00, "X/2": 12.00, "2/2": 10.00
+    }
   },
   {
     id:"qf2", t1:"Spain", t2:"Belgium", date: "2026-07-10T21:00:00+02:00",
-    odds: { "1": 2.10, "X": 3.40, "2": 3.50, "u25": 1.85, "o25": 1.95, "u35": 1.30, "o35": 3.40, "kgv": 1.80, "kgy": 1.95 }
+    odds: { 
+      "1": 1.47, "X": 3.69, "2": 4.96, 
+      "u25": 1.83, "o25": 1.66, 
+      "kgv": 1.67, "kgy": 1.82,
+      "1/1": 2.50, "X/1": 4.50, "2/1": 21.00,
+      "1/X": 13.00, "X/X": 6.00, "2/X": 15.00,
+      "1/2": 41.00, "X/2": 11.00, "2/2": 9.00
+    }
   },
   {
     id:"qf3", t1:"Norway", t2:"England", date: "2026-07-11T23:00:00+02:00",
-    odds: { "1": 4.80, "X": 3.60, "2": 1.75, "u25": 1.90, "o25": 1.90, "u35": 1.35, "o35": 3.10, "kgv": 1.90, "kgy": 1.85 }
+    odds: { 
+      "1": 3.84, "X": 3.41, "2": 1.68, 
+      "u25": 1.93, "o25": 1.59, 
+      "kgv": 1.54, "kgy": 2.00,
+      "1/1": 7.00, "X/1": 8.50, "2/1": 29.00,
+      "1/X": 15.00, "X/X": 5.50, "2/X": 13.00,
+      "1/2": 21.00, "X/2": 4.75, "2/2": 3.00
+    }
   },
   {
     id:"qf4", t1:"Argentina", t2:"Switzerland", date: "2026-07-12T03:00:00+02:00",
-    odds: { "1": 1.65, "X": 3.60, "2": 5.50, "u25": 1.65, "o25": 2.20, "u35": 1.20, "o35": 4.20, "kgv": 2.15, "kgy": 1.65 }
+    odds: { 
+      "1": 1.54, "X": 3.28, "2": 5.06, 
+      "u25": 1.52, "o25": 2.04, 
+      "kgv": 1.99, "kgy": 1.55,
+      "1/1": 2.62, "X/1": 4.33, "2/1": 26.00,
+      "1/X": 15.00, "X/X": 5.00, "2/X": 17.00,
+      "1/2": 41.00, "X/2": 11.00, "2/2": 9.50
+    }
   }
 ];
 
 const MARKET_NAMES = {
-  "1": "Maç Sonucu 1", "X": "Beraberlik (X)", "2": "Maç Sonucu 2",
-  "u25": "2.5 Alt", "o25": "2.5 Üst", "u35": "3.5 Alt", "o35": "3.5 Üst",
-  "kgv": "KG Var", "kgy": "KG Yok"
+  "1": "MS 1", "X": "MS X", "2": "MS 2",
+  "u25": "2.5 Alt", "o25": "2.5 Üst",
+  "kgv": "KG Var", "kgy": "KG Yok",
+  "1/1": "İY 1 / MS 1", "X/1": "İY X / MS 1", "2/1": "İY 2 / MS 1",
+  "1/X": "İY 1 / MS X", "X/X": "İY X / MS X", "2/X": "İY 2 / MS X",
+  "1/2": "İY 1 / MS 2", "X/2": "İY X / MS 2", "2/2": "İY 2 / MS 2"
 };
 
 let isCurrentMatchLocked = false;
@@ -586,9 +623,13 @@ async function displayEvents(evs, startC1, startC2) {
 }
 
 function finalizeMatch(m, s1, s2, winner, pens, evs) {
-    simulationResults[m.id] = { s1, s2, winner, pens, isUserPrediction: true };
+    // İlk yarı skorlarını tut (İleride yerel bet testleri için işe yarayabilir)
+    let ht1 = 0, ht2 = 0;
     evs.forEach(e => {
         if(e.type === "goal") {
+            if(e.m <= 45) {
+                if(e.team === 1) ht1++; else ht2++;
+            }
             if(!playerStats[e.sc]) playerStats[e.sc] = { goals: 0, assists: 0, teamName: e.teamName };
             playerStats[e.sc].goals++;
             if(e.as) {
@@ -597,6 +638,8 @@ function finalizeMatch(m, s1, s2, winner, pens, evs) {
             }
         }
     });
+    
+    simulationResults[m.id] = { s1, s2, ht1, ht2, winner, pens, isUserPrediction: true };
     renderStats();
     document.getElementById("next-match-btn").style.display = "block";
     set(ref(db, `${FBP()}/simulationResults`), simulationResults);
@@ -694,41 +737,59 @@ function renderStats() {
 
 // ================= BAHİS (BETTING) MANTIĞI =================
 
-// Evaluate a single bet pick based on official 90 min results
-function evaluatePick(pickKey, s1, s2) {
+function evaluatePick(pickKey, s1, s2, ht1, ht2) {
   if (s1 === undefined || s2 === undefined) return 'pending';
   s1 = Number(s1); s2 = Number(s2);
+  
+  // NOT: Gerçek sonuçları (worldcup2026-official-ceyrekfinal) girerken, 
+  // İY/MS bahislerinin doğru çalışması için "s1", "s2" yanına "ht1" ve "ht2" 
+  // değerlerini de eklemeyi unutmayın! Eğer yoksa script hata vermemek adına
+  // skoru yarı yarıya paylaştırır.
+  if (ht1 === undefined) ht1 = Math.floor(s1 / 2);
+  if (ht2 === undefined) ht2 = Math.floor(s2 / 2);
+
   const sum = s1 + s2;
   let won = false;
   
+  const isHT1 = ht1 > ht2;
+  const isHTX = ht1 === ht2;
+  const isHT2 = ht1 < ht2;
+  
+  const isFT1 = s1 > s2;
+  const isFTX = s1 === s2;
+  const isFT2 = s1 < s2;
+  
   switch(pickKey) {
-    case "1": won = (s1 > s2); break;
-    case "X": won = (s1 === s2); break;
-    case "2": won = (s1 < s2); break;
+    case "1": won = isFT1; break;
+    case "X": won = isFTX; break;
+    case "2": won = isFT2; break;
     case "u25": won = (sum < 2.5); break;
     case "o25": won = (sum > 2.5); break;
-    case "u35": won = (sum < 3.5); break;
-    case "o35": won = (sum > 3.5); break;
     case "kgv": won = (s1 > 0 && s2 > 0); break;
     case "kgy": won = (s1 === 0 || s2 === 0); break;
+    case "1/1": won = isHT1 && isFT1; break;
+    case "X/1": won = isHTX && isFT1; break;
+    case "2/1": won = isHT2 && isFT1; break;
+    case "1/X": won = isHT1 && isFTX; break;
+    case "X/X": won = isHTX && isFTX; break;
+    case "2/X": won = isHT2 && isFTX; break;
+    case "1/2": won = isHT1 && isFT2; break;
+    case "X/2": won = isHTX && isFT2; break;
+    case "2/2": won = isHT2 && isFT2; break;
   }
   return won ? 'won' : 'lost';
 }
 
 function calculateBalanceAndCoupons() {
   let bal = 100.00;
-  
   userBets.forEach(bet => {
-    bal -= bet.stake; // Deduct stake immediately
-    let allWon = true;
-    let anyLost = false;
-    
+    bal -= bet.stake;
+    let allWon = true; let anyLost = false;
     bet.legs.forEach(leg => {
       const official = officialResults[leg.matchId];
-      // Note: betting graded on 90mins. We assume official DB provides 90 min scores or we just grade on provided scores.
       let legStatus = 'pending';
       if (official && official.s1 !== undefined) {
-         legStatus = evaluatePick(leg.pick, official.s1, official.s2);
+         legStatus = evaluatePick(leg.pick, official.s1, official.s2, official.ht1, official.ht2);
       }
       leg.status = legStatus;
       if (legStatus === 'lost') anyLost = true;
@@ -750,7 +811,6 @@ function calculateBalanceAndCoupons() {
 }
 
 window.addBetToSlip = function(matchId, t1, t2, pickKey, oddVal) {
-  // Check if slip already has this match, replace it
   betSlip = betSlip.filter(leg => leg.matchId !== matchId);
   betSlip.push({ matchId, t1, t2, pick: pickKey, odd: oddVal });
   renderSlip();
@@ -788,9 +848,9 @@ function renderSlip() {
   document.getElementById("slip-total-odd").textContent = totalOdd.toFixed(2);
   updateSlipPotential();
   
-  // Highlight selected odds in UI
   document.querySelectorAll('.odd-btn').forEach(btn => btn.classList.remove('selected'));
   betSlip.forEach(leg => {
+    // Özel ID seçimi: "/" içerdiği için CSS seçiminde kaçış karakteri sorunu yaratabilir, direkt ID ile alıyoruz.
     const btn = document.getElementById(`odd-${leg.matchId}-${leg.pick}`);
     if (btn) btn.classList.add('selected');
   });
@@ -811,7 +871,6 @@ document.getElementById("place-bet-btn").addEventListener("click", async () => {
   if (isNaN(stake) || stake < 1) return toast("Geçerli bir miktar girin.");
   if (stake > currentBalance) return toast("Yetersiz bakiye!");
 
-  // Check if any match in slip has already started
   const now = new Date().getTime();
   for (let leg of betSlip) {
     const m = CEYREK_MATCHES.find(x => x.id === leg.matchId);
@@ -827,7 +886,7 @@ document.getElementById("place-bet-btn").addEventListener("click", async () => {
     stake: stake,
     totalOdd: totalOdd,
     legs: [...betSlip],
-    status: 'pending' // 'won', 'lost', 'pending'
+    status: 'pending' 
   };
 
   userBets.push(newBet);
@@ -839,7 +898,6 @@ document.getElementById("place-bet-btn").addEventListener("click", async () => {
 });
 
 function renderBetPage() {
-  // Render Markets
   const listEl = document.getElementById("bet-matches-list");
   const now = new Date().getTime();
   
@@ -856,7 +914,8 @@ function renderBetPage() {
         </div>
         
         <div style="display:flex; gap:16px; flex-wrap:wrap;">
-          <div class="market-group" style="flex: 1 1 200px;">
+          
+          <div class="market-group" style="flex: 1 1 180px;">
             <div class="market-title">Taraf Bahsi (1X2)</div>
             <div class="odds-row">
               <div class="odd-btn" id="odd-${m.id}-1" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', '1', ${m.odds['1']})">
@@ -871,7 +930,7 @@ function renderBetPage() {
             </div>
           </div>
           
-          <div class="market-group" style="flex: 1 1 140px;">
+          <div class="market-group" style="flex: 1 1 120px;">
             <div class="market-title">2.5 Gol A/Ü</div>
             <div class="odds-row">
               <div class="odd-btn" id="odd-${m.id}-u25" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', 'u25', ${m.odds['u25']})">
@@ -882,7 +941,56 @@ function renderBetPage() {
               </div>
             </div>
           </div>
+
+          <div class="market-group" style="flex: 1 1 120px;">
+            <div class="market-title">Karşılıklı Gol</div>
+            <div class="odds-row">
+              <div class="odd-btn" id="odd-${m.id}-kgv" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', 'kgv', ${m.odds['kgv']})">
+                <span class="odd-label">Var</span><span class="odd-val">${m.odds['kgv'].toFixed(2)}</span>
+              </div>
+              <div class="odd-btn" id="odd-${m.id}-kgy" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', 'kgy', ${m.odds['kgy']})">
+                <span class="odd-label">Yok</span><span class="odd-val">${m.odds['kgy'].toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+
         </div>
+
+        <div class="market-group" style="margin-top: 16px;">
+          <div class="market-title">İlk Yarı / Maç Sonucu (İY/MS)</div>
+          <div class="odds-grid-3x3">
+            <div class="odd-btn" id="odd-${m.id}-1/1" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', '1/1', ${m.odds['1/1']})">
+              <span class="odd-label">1/1</span><span class="odd-val">${m.odds['1/1'].toFixed(2)}</span>
+            </div>
+            <div class="odd-btn" id="odd-${m.id}-X/1" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', 'X/1', ${m.odds['X/1']})">
+              <span class="odd-label">X/1</span><span class="odd-val">${m.odds['X/1'].toFixed(2)}</span>
+            </div>
+            <div class="odd-btn" id="odd-${m.id}-2/1" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', '2/1', ${m.odds['2/1']})">
+              <span class="odd-label">2/1</span><span class="odd-val">${m.odds['2/1'].toFixed(2)}</span>
+            </div>
+
+            <div class="odd-btn" id="odd-${m.id}-1/X" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', '1/X', ${m.odds['1/X']})">
+              <span class="odd-label">1/X</span><span class="odd-val">${m.odds['1/X'].toFixed(2)}</span>
+            </div>
+            <div class="odd-btn" id="odd-${m.id}-X/X" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', 'X/X', ${m.odds['X/X']})">
+              <span class="odd-label">X/X</span><span class="odd-val">${m.odds['X/X'].toFixed(2)}</span>
+            </div>
+            <div class="odd-btn" id="odd-${m.id}-2/X" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', '2/X', ${m.odds['2/X']})">
+              <span class="odd-label">2/X</span><span class="odd-val">${m.odds['2/X'].toFixed(2)}</span>
+            </div>
+
+            <div class="odd-btn" id="odd-${m.id}-1/2" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', '1/2', ${m.odds['1/2']})">
+              <span class="odd-label">1/2</span><span class="odd-val">${m.odds['1/2'].toFixed(2)}</span>
+            </div>
+            <div class="odd-btn" id="odd-${m.id}-X/2" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', 'X/2', ${m.odds['X/2']})">
+              <span class="odd-label">X/2</span><span class="odd-val">${m.odds['X/2'].toFixed(2)}</span>
+            </div>
+            <div class="odd-btn" id="odd-${m.id}-2/2" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', '2/2', ${m.odds['2/2']})">
+              <span class="odd-label">2/2</span><span class="odd-val">${m.odds['2/2'].toFixed(2)}</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     `;
   }).join("");
@@ -890,7 +998,6 @@ function renderBetPage() {
   calculateBalanceAndCoupons();
   renderSlip();
   
-  // Render History
   const histEl = document.getElementById("my-bets-list");
   if (userBets.length === 0) {
     histEl.innerHTML = `<div style="color:var(--text-muted); font-size:0.9rem;">Henüz kupon yapılmadı.</div>`;
@@ -932,15 +1039,13 @@ async function updateLeaderboards() {
     const usersSnap = await get(ref(db, DB_USERS));
     const usersData = usersSnap.val() || {};
     
-    // Yalnızca bet bakiyesini güncellemek için resmi sonuçları çekiyoruz
     const officialSnap = await get(ref(db, DB_OFFICIAL));
-    officialResults = officialSnap.val() || {}; // update global cache
+    officialResults = officialSnap.val() || {}; 
 
     let predLeaderboard = [];
     let betLeaderboard = [];
 
     for (const [username, userData] of Object.entries(usersData)) {
-      // 1. Puan Sıralaması (Son 16'daki mantığın aynısı)
       let points = 0;
       const userSims = userData.simulationResults || {};
       for (const [matchId, officialData] of Object.entries(officialResults)) {
@@ -953,7 +1058,6 @@ async function updateLeaderboards() {
       }
       predLeaderboard.push({ name: username, points });
 
-      // 2. Bet Bakiyesi Sıralaması
       let tempBets = userData.bets || [];
       let tempBal = 100.00;
       tempBets.forEach(bet => {
@@ -963,7 +1067,7 @@ async function updateLeaderboards() {
           const off = officialResults[leg.matchId];
           let legStatus = 'pending';
           if (off && off.s1 !== undefined) {
-             legStatus = evaluatePick(leg.pick, off.s1, off.s2);
+             legStatus = evaluatePick(leg.pick, off.s1, off.s2, off.ht1, off.ht2);
           }
           if (legStatus === 'lost') anyLost = true;
           if (legStatus === 'pending') allWon = false;
@@ -973,7 +1077,6 @@ async function updateLeaderboards() {
       betLeaderboard.push({ name: username, balance: tempBal });
     }
 
-    // Render Puan Sıralaması
     predLeaderboard.sort((a, b) => b.points - a.points);
     if (predLeaderboard.length === 0) {
       lbContainer.innerHTML = `<div style="text-align:center; color:var(--text-muted);">Henüz veri yok.</div>`;
@@ -991,7 +1094,6 @@ async function updateLeaderboards() {
       }).join("");
     }
 
-    // Render Bet Sıralaması
     betLeaderboard.sort((a, b) => b.balance - a.balance);
     if (betLeaderboard.length === 0) {
       betLbContainer.innerHTML = `<div style="text-align:center; color:var(--text-muted);">Henüz veri yok.</div>`;
@@ -1028,7 +1130,6 @@ function renderResults() {
 
 async function loadAndInit() {
   try {
-    // Official DB'yi önbelleğe alalım ki bahisler anlık doğru hesaplansın
     const offSnap = await get(ref(db, DB_OFFICIAL));
     officialResults = offSnap.val() || {};
 
