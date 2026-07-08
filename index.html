@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>⚽ Dünya Kupası 2026 - Çeyrek Final & Bahis Simülatörü</title>
+<title>⚽ Dünya Kupası 2026 - Çeyrek Final Simülatörü</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -19,8 +19,8 @@ html{scroll-behavior:smooth}
 body{font-family:"Poppins",sans-serif;background:var(--navy);min-height:100vh;color:var(--text);overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(30,60,120,.4) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(20,50,100,.3) 0%,transparent 50%),radial-gradient(ellipse at 60% 80%,rgba(15,40,90,.3) 0%,transparent 50%);pointer-events:none;z-index:0}
 
-.layout-wrapper { display: flex; max-width: 1400px; margin: 0 auto; align-items: flex-start; padding-top: 20px; gap: 20px;}
-.main-content { flex: 1; min-width: 0; padding: 0 16px; }
+.layout-wrapper { display: flex; max-width: 1400px; margin: 0 auto; align-items: flex-start; padding-top: 20px; gap: 20px; flex-direction: row;}
+.main-content { flex: 1; min-width: 0; padding: 0 16px; display: flex; flex-direction: column; min-height: calc(100vh - 84px);}
 .sidebar { width: 340px; background: rgba(255,255,255,0.02); border-left: 1px solid rgba(255,255,255,0.08); padding: 24px; position: sticky; top: 84px; height: calc(100vh - 84px); overflow-y: auto; display: flex; flex-direction: column; gap: 24px; backdrop-filter: blur(10px); }
 .sidebar::-webkit-scrollbar { width: 6px; }
 .sidebar::-webkit-scrollbar-thumb { background: rgba(240,180,41,.3); border-radius: 4px; }
@@ -43,37 +43,20 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .header-title{font-family:"Bebas Neue",sans-serif;font-size:1.6rem;letter-spacing:2px;color:var(--gold);white-space:nowrap;cursor:pointer}
 .header-tabs{display:flex;gap:8px;flex:1;justify-content:center;flex-wrap:wrap}
 
-/* ── UI/UX GÜNCELLEMESİ: TAB BUTONLARI BÜYÜTÜLDÜ VE BELİRGİNLEŞTİ ── */
 .tab-btn{background:transparent;border:1px solid rgba(240,180,41,.3);color:var(--text-muted);padding:8px 16px;border-radius:20px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap;font-family:"Poppins",sans-serif}
 .tab-btn:hover{background:rgba(240,180,41,.1);color:var(--text);}
 .tab-btn.active{background:var(--gold);border-color:var(--gold);color:#0d1b3e}
 
-/* ── UI/UX GÜNCELLEMESİ: BAHİS (BET) SEKME ANİMASYONU ── */
-.tab-btn-bet {
-  background: linear-gradient(135deg, #0284c7, #38bdf8);
-  color: #fff !important;
-  border: 1px solid #7dd3fc;
-  font-weight: 800;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-  animation: pulseBet 2s infinite;
-}
-.tab-btn-bet.active {
-  background: linear-gradient(135deg, #0369a1, #0284c7) !important;
-  border-color: #38bdf8 !important;
-  color: #fff !important;
-}
-@keyframes pulseBet {
-  0% { box-shadow: 0 0 0 0 rgba(56,189,248,0.7); }
-  70% { box-shadow: 0 0 0 10px rgba(56,189,248,0); }
-  100% { box-shadow: 0 0 0 0 rgba(56,189,248,0); }
-}
+.tab-btn-bet { background: linear-gradient(135deg, #0284c7, #38bdf8); color: #fff !important; border: 1px solid #7dd3fc; font-weight: 800; text-shadow: 0 1px 2px rgba(0,0,0,0.3); animation: pulseBet 2s infinite; }
+.tab-btn-bet.active { background: linear-gradient(135deg, #0369a1, #0284c7) !important; border-color: #38bdf8 !important; color: #fff !important; }
+@keyframes pulseBet { 0% { box-shadow: 0 0 0 0 rgba(56,189,248,0.7); } 70% { box-shadow: 0 0 0 10px rgba(56,189,248,0); } 100% { box-shadow: 0 0 0 0 rgba(56,189,248,0); } }
 
 .header-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
 #user-pill{background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.3);border-radius:20px;padding:6px 14px;font-size:.8rem;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:6px;cursor:pointer}
 .upill-dot{width:8px;height:8px;border-radius:50%;}
 .restart-btn{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4);color:#fca5a5;padding:8px 14px;border-radius:20px;font-size:.8rem;font-weight:600;cursor:pointer;}
 
-.page{display:none;position:relative;z-index:1;min-height:calc(100vh - 64px);padding:24px 16px 60px}
+.page{display:none;position:relative;z-index:1;padding:24px 0 60px; flex: 1;}
 .page.active{display:block}
 
 /* ── SIMULATOR MATCH CARD VIEW ── */
@@ -117,8 +100,8 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .pen-score-mid { font-family: "Bebas Neue", sans-serif; font-size: 2rem; color: var(--text); white-space: nowrap; }
 .next-match-btn{width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#0d1b3e;border:none;border-radius:14px;font-family:"Poppins",sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;display:none}
 
-/* ── BETTING PAGE STYLES ── */
-.bet-container { display: flex; gap: 24px; max-width: 1200px; margin: 0 auto; align-items: flex-start; }
+/* ── KUPON OYUNU STYLES ── */
+.bet-container { display: flex; gap: 24px; width: 100%; align-items: flex-start; }
 .bet-main { flex: 1; }
 .bet-sidebar { width: 320px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; position: sticky; top: 84px; display: flex; flex-direction: column; }
 .bet-header-balance { background: linear-gradient(135deg, var(--navy2), var(--navy3)); padding: 20px; border-radius: 16px; border: 1px solid rgba(56,189,248,0.3); display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
@@ -173,9 +156,12 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .bh-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; font-size: 0.85rem; font-weight: 600; }
 .bh-win-amt { font-size: 1.1rem; font-weight: 800; color: var(--green); }
 
-/* ── RESULTS GRID & PANELS ── */
-.results-grid { display: flex; gap: 24px; max-width: 1100px; margin: 0 auto; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
-.leaderboard-wrap, .community-wrap { flex: 1; min-width: 320px; max-width: 500px; background: rgba(0,0,0,0.25); border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.3); margin-bottom: 40px; }
+/* ── YENİ GRID YAPISI (RESULTS) ── */
+.results-page { width: 100%; }
+.results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; width: 100%; align-items: start; }
+.results-left-col { display: flex; flex-direction: column; gap: 24px; }
+
+.leaderboard-wrap, .community-wrap { background: rgba(0,0,0,0.25); border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.3); width: 100%; }
 .leaderboard-title, .comm-title { font-family: "Bebas Neue", sans-serif; font-size: 1.8rem; letter-spacing: 2px; color: var(--gold); text-align: center; margin-bottom: 20px; }
 .bet-lb-title { color: var(--accent-bet); }
 
@@ -190,44 +176,20 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .lb-pts { font-family: "Bebas Neue", sans-serif; font-size: 1.3rem; color: var(--green); background: rgba(34,197,94,0.15); padding: 4px 16px; border-radius: 12px; }
 .lb-bal { color: var(--accent-bet); background: rgba(56,189,248,0.15); }
 
-/* ── RESULTS ── */
-.results-page{max-width:960px;margin:0 auto}
-.result-wrap{max-width:500px;margin:0 auto 30px}
+/* ── RESULTS SUMMARY ── */
+.result-wrap{ width: 100%; }
 .result-card{background:linear-gradient(160deg,#0d1b3e 0%,#12244f 50%,#0a1630 100%);border:1px solid rgba(240,180,41,.25);border-radius:28px;padding:32px 24px;box-shadow:0 20px 60px rgba(0,0,0,.6);position:relative;overflow:hidden;text-align:center;}
 .result-title{font-family:"Bebas Neue",sans-serif;font-size:2rem;letter-spacing:3px;color:var(--gold);margin-bottom:6px}
 .result-user{font-size:.85rem;color:var(--text-muted);margin-bottom:24px;}
 .done-message{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px;font-weight:600;}
 
-/* ── UI/UX GÜNCELLEMESİ: DEVASA TAHMİNLERİM BUTONU ── */
-.my-pred-btn-wrap {
-  max-width: 500px;
-  margin: 0 auto 40px;
-  text-align: center;
-}
-.my-pred-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 18px 24px;
-  background: linear-gradient(135deg, var(--gold2), var(--gold));
-  color: var(--navy);
-  border: none;
-  border-radius: 20px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 800;
-  font-size: 1.15rem;
-  cursor: pointer;
-  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 8px 25px rgba(240, 180, 41, 0.4);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.my-pred-btn:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 35px rgba(240, 180, 41, 0.6);
-}
+/* ── TAHMİNLERİM BUTONU ── */
+.my-pred-btn-wrap { width: 100%; text-align: center; }
+.my-pred-btn { display: flex; justify-content: center; align-items: center; gap: 12px; width: 100%; padding: 18px 24px; background: linear-gradient(135deg, var(--gold2), var(--gold)); color: var(--navy); border: none; border-radius: 20px; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 1.15rem; cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 25px rgba(240, 180, 41, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.my-pred-btn:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 35px rgba(240, 180, 41, 0.6); }
+
+/* ── YASAL UYARI ── */
+.legal-disclaimer { text-align: center; font-size: 0.75rem; color: rgba(255,255,255,0.3); padding: 20px 16px; margin-top: auto; border-top: 1px dashed rgba(255,255,255,0.08); font-family: "Poppins", sans-serif; width: 100%; }
 
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(5,10,25,.75);z-index:9500;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);}
 .modal-overlay.active{display:flex;}
@@ -278,8 +240,8 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 <div id="wc-toast"></div>
 
 <div id="auth-overlay">
-  <div class="auth-title">⚽ WC 2026<br>ÇEYREK FİNAL & BAHİS</div>
-  <p class="auth-subtitle">Adını girerek tahminlere ve bahislere başla</p>
+  <div class="auth-title">⚽ WC 2026<br>ÇEYREK FİNAL OYUNU</div>
+  <p class="auth-subtitle">Adını girerek simülasyonlara ve kupon oyununa başla</p>
   <div class="auth-custom">
     <input type="text" class="auth-input" id="custom-name-inp" placeholder="Adını gir…" maxlength="20"/>
     <button class="auth-go" id="custom-name-btn">Gir →</button>
@@ -290,7 +252,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
   <div class="header-title" id="header-logo">⚽ WC 2026</div>
   <div class="header-tabs">
     <button class="tab-btn active" data-tab="knockout">Çeyrek Final Simüle</button>
-    <button class="tab-btn tab-btn-bet" data-tab="bet">🎲 BAHİS OYNA (Bet) 🎲</button>
+    <button class="tab-btn tab-btn-bet" data-tab="bet">🎲 KUPON YAP (Eğlence) 🎲</button>
     <button class="tab-btn" data-tab="results">Sonuçlar & Sıralama 🏆</button>
   </div>
   <div class="header-right">
@@ -335,19 +297,19 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
       </div>
     </div>
 
-    <!-- BAHİS (BET) SAYFASI -->
+    <!-- KUPON OYUNU SAYFASI -->
     <div class="page" id="page-bet">
       <div class="bet-container">
         <div class="bet-main">
           <div class="bet-header-balance">
             <div>
-              <div class="balance-label">Güncel Bahis Bakiyen</div>
+              <div class="balance-label">Güncel Oyun Bakiyen</div>
               <div class="balance-amount" id="display-balance">100.00 KREDİ</div>
             </div>
-            <div class="balance-icon">💰</div>
+            <div class="balance-icon">🪙</div>
           </div>
           
-          <div class="gs-title" style="color:var(--accent-bet); text-align:left; margin-bottom:20px;">ÇEYREK FİNAL BÜLTENİ</div>
+          <div class="gs-title" style="color:var(--accent-bet); text-align:left; margin-bottom:20px;">ÇEYREK FİNAL KUPON BÜLTENİ</div>
           <div id="bet-matches-list">
              <!-- Matches injected here -->
           </div>
@@ -379,7 +341,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
               <span>Olası Kazanç:</span>
               <span class="pot-win" id="slip-pot-win">10.00</span>
             </div>
-            <button class="place-bet-btn" id="place-bet-btn">KUPONU YATIR (<span id="rem-coupons">10</span> Hak Kaldı)</button>
+            <button class="place-bet-btn" id="place-bet-btn">KUPONU ONAYLA (<span id="rem-coupons">10</span> Hak Kaldı)</button>
           </div>
         </aside>
       </div>
@@ -388,15 +350,25 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
     <!-- SONUÇLAR VE LİDERLİK TABLOLARI -->
     <div class="page" id="page-results">
       <div class="results-page">
-        <div class="result-wrap" id="my-result-wrap"></div>
-        
-        <!-- YENİ BÜYÜK "TAHMİNLERİM" BUTONU -->
-        <div class="my-pred-btn-wrap">
-          <button class="my-pred-btn" id="my-pred-toggle-btn">📋 Kendi Tahminlerimi ve Puanlarımı Gör</button>
-        </div>
-        
         <div class="results-grid">
           
+          <!-- SOL KOLON: Özet, Tahmin Butonu ve Topluluk Oyları -->
+          <div class="results-left-col">
+            <div class="result-wrap" id="my-result-wrap"></div>
+            
+            <div class="my-pred-btn-wrap">
+              <button class="my-pred-btn" id="my-pred-toggle-btn">📋 Kendi Tahminlerimi ve Puanlarımı Gör</button>
+            </div>
+            
+            <div class="community-wrap">
+              <div class="comm-title">📊 TOPLULUK TAHMİNLERİ</div>
+              <div id="community-list">
+                <div style="text-align:center; color:var(--text-muted); font-size:0.9rem;">Veriler yükleniyor...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ORTA KOLON: Tahmin Sıralaması -->
           <div class="leaderboard-wrap">
             <div class="leaderboard-title">🏆 TAHMİN SIRALAMASI</div>
             <div id="leaderboard-list">
@@ -404,22 +376,21 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
             </div>
           </div>
 
+          <!-- SAĞ KOLON: Oyun Bakiyesi Sıralaması -->
           <div class="leaderboard-wrap" style="border-color: rgba(56,189,248,0.3);">
-            <div class="leaderboard-title bet-lb-title">💰 BAHİS BAKİYESİ SIRALAMASI</div>
+            <div class="leaderboard-title bet-lb-title">💰 OYUN BAKİYESİ SIRALAMASI</div>
             <div id="bet-leaderboard-list">
               <div style="text-align:center; color:var(--text-muted); font-size:0.9rem;">Sıralama hesaplanıyor...</div>
-            </div>
-          </div>
-          
-          <div class="community-wrap">
-            <div class="comm-title">📊 TOPLULUK TAHMİNLERİ</div>
-            <div id="community-list">
-              <div style="text-align:center; color:var(--text-muted); font-size:0.9rem;">Veriler yükleniyor...</div>
             </div>
           </div>
 
         </div>
       </div>
+    </div>
+
+    <!-- YASAL UYARI EKLENTİSİ -->
+    <div class="legal-disclaimer">
+      ⚠️ <strong>Yasal Uyarı:</strong> Bu platform tamamen eğlence ve simülasyon amaçlıdır. Gerçek para yatırılmaz, çekilmez; maddi bir kazanç veya kayıp yaşanmaz.
     </div>
 
   </div>
@@ -847,7 +818,7 @@ function renderStats() {
   document.getElementById("top-assists-list").innerHTML = topAssists.map(p => `<div class="stat-item"><div class="stat-player"><span>${flag(p.teamName)}</span> <span>${p.name}</span></div><div class="stat-val">${p.assists}</div></div>`).join("");
 }
 
-// ================= BAHİS (BETTING) MANTIĞI =================
+// ================= KUPON OYUNU MANTIĞI =================
 function evaluatePick(pickKey, s1, s2, ht1, ht2) {
   if (s1 === undefined || s2 === undefined) return 'pending';
   s1 = Number(s1); s2 = Number(s2);
@@ -1005,7 +976,7 @@ document.getElementById("place-bet-btn").addEventListener("click", async () => {
     for (let leg of betSlip) {
       const m = CEYREK_MATCHES.find(x => x.id === leg.matchId);
       if (serverTime >= new Date(m.date).getTime()) {
-        throw new Error(`${m.t1}-${m.t2} maçı başladı, bahis yapılamaz!`);
+        throw new Error(`${m.t1}-${m.t2} maçı başladı, kupona eklenemez!`);
       }
       const realOdd = m.odds[leg.pick];
       secureTotalOdd *= realOdd;
@@ -1018,7 +989,7 @@ document.getElementById("place-bet-btn").addEventListener("click", async () => {
     
     userBets = realBets;
     betSlip = [];
-    toast("✅ Kupon başarıyla yatırıldı!");
+    toast("✅ Kupon başarıyla onaylandı!");
     renderBetPage();
   } catch (error) {
     toast(error.message || "Bir hata oluştu.");
@@ -1033,7 +1004,7 @@ function renderBetPage() {
   
   listEl.innerHTML = CEYREK_MATCHES.map(m => {
     const isLocked = now >= new Date(m.date).getTime();
-    const lockOverlay = isLocked ? `<div style="position:absolute; inset:0; background:rgba(0,0,0,0.6); z-index:10; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem; color:var(--red); border-radius:16px; backdrop-filter:blur(2px);">BAHİSLERE KAPANDI</div>` : '';
+    const lockOverlay = isLocked ? `<div style="position:absolute; inset:0; background:rgba(0,0,0,0.6); z-index:10; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem; color:var(--red); border-radius:16px; backdrop-filter:blur(2px);">KUPONLARA KAPANDI</div>` : '';
     
     return `
       <div class="bet-match-card" style="position:relative;">
@@ -1046,7 +1017,7 @@ function renderBetPage() {
         <div style="display:flex; gap:16px; flex-wrap:wrap;">
           
           <div class="market-group" style="flex: 1 1 180px;">
-            <div class="market-title">Taraf Bahsi (1X2)</div>
+            <div class="market-title">Taraf Seçimi (1X2)</div>
             <div class="odds-row">
               <div class="odd-btn" id="odd-${m.id}-1" onclick="window.addBetToSlip('${m.id}', '${m.t1}', '${m.t2}', '1', ${m.odds['1']})">
                 <span class="odd-label">1</span><span class="odd-val">${m.odds['1'].toFixed(2)}</span>
@@ -1159,7 +1130,6 @@ function renderBetPage() {
   }
 }
 
-// ================= TOPLULUK TAHMİNLERİ (UI) =================
 function renderCommunityVotes(usersData, officialResults = {}) {
   let matchVotes = {};
   CEYREK_MATCHES.forEach(m => {
@@ -1241,7 +1211,6 @@ function renderCommunityVotes(usersData, officialResults = {}) {
   document.getElementById("community-list").innerHTML = htmlResult;
 }
 
-// ================= LİDERLİK TABLOLARI =================
 async function updateLeaderboards() {
   const lbContainer = document.getElementById("leaderboard-list");
   const betLbContainer = document.getElementById("bet-leaderboard-list");
@@ -1359,12 +1328,11 @@ function renderResults() {
       <div class="result-title">ÇEYREK FİNAL ÖZETİ</div>
       <div class="result-user">${curUser}</div>
       <div class="done-message">
-        ${currentMatchIdx >= CEYREK_MATCHES.length ? "Tüm çeyrek final simülasyonlarını tamamladın!" : "Simülasyonlara veya bahislere devam edin."}
+        ${currentMatchIdx >= CEYREK_MATCHES.length ? "Tüm çeyrek final simülasyonlarını tamamladın!" : "Simülasyonlara veya oyunlara devam edin."}
       </div>
     </div>`;
 }
 
-// ================= TAHMİNLERİM MODAL =================
 async function openMyPredictionsModal() {
   const modal = document.getElementById("my-predictions-modal");
   modal.classList.add("active");
@@ -1435,7 +1403,6 @@ document.getElementById("my-predictions-modal").addEventListener("click", (e) =>
   if (e.target.id === "my-predictions-modal") e.currentTarget.classList.remove("active");
 });
 
-// ================= RESET BUTTON =================
 document.getElementById("restart-btn").addEventListener("click", async () => {
   const confirmReset = confirm("Tüm tahminlerini, kuponlarını ve bakiyeni sıfırlamak istediğine emin misin? Bu işlem geri alınamaz!");
   if (confirmReset) {
