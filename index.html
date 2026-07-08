@@ -39,15 +39,39 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .auth-input:focus{border-color:var(--gold)}
 .auth-go{padding:12px 20px;background:var(--gold);color:#0d1b3e;border:none;border-radius:12px;font-weight:700;font-family:"Poppins",sans-serif;cursor:pointer;}
 
-#wc-header{position:sticky;top:0;z-index:100;background:rgba(13,27,62,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(240,180,41,.2);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:64px;gap:10px}
-.header-title{font-family:"Bebas Neue",sans-serif;font-size:1.5rem;letter-spacing:2px;color:var(--gold);white-space:nowrap;cursor:pointer}
-.header-tabs{display:flex;gap:5px;flex:1;justify-content:center;flex-wrap:wrap}
-.tab-btn{background:transparent;border:1px solid rgba(240,180,41,.25);color:var(--text-muted);padding:6px 12px;border-radius:20px;font-size:.72rem;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap;font-family:"Poppins",sans-serif}
+#wc-header{position:sticky;top:0;z-index:100;background:rgba(13,27,62,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(240,180,41,.2);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:68px;gap:15px}
+.header-title{font-family:"Bebas Neue",sans-serif;font-size:1.6rem;letter-spacing:2px;color:var(--gold);white-space:nowrap;cursor:pointer}
+.header-tabs{display:flex;gap:8px;flex:1;justify-content:center;flex-wrap:wrap}
+
+/* ── UI/UX GÜNCELLEMESİ: TAB BUTONLARI BÜYÜTÜLDÜ VE BELİRGİNLEŞTİ ── */
+.tab-btn{background:transparent;border:1px solid rgba(240,180,41,.3);color:var(--text-muted);padding:8px 16px;border-radius:20px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap;font-family:"Poppins",sans-serif}
+.tab-btn:hover{background:rgba(240,180,41,.1);color:var(--text);}
 .tab-btn.active{background:var(--gold);border-color:var(--gold);color:#0d1b3e}
-.header-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-#user-pill{background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.3);border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:6px;cursor:pointer}
+
+/* ── UI/UX GÜNCELLEMESİ: BAHİS (BET) SEKME ANİMASYONU ── */
+.tab-btn-bet {
+  background: linear-gradient(135deg, #0284c7, #38bdf8);
+  color: #fff !important;
+  border: 1px solid #7dd3fc;
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  animation: pulseBet 2s infinite;
+}
+.tab-btn-bet.active {
+  background: linear-gradient(135deg, #0369a1, #0284c7) !important;
+  border-color: #38bdf8 !important;
+  color: #fff !important;
+}
+@keyframes pulseBet {
+  0% { box-shadow: 0 0 0 0 rgba(56,189,248,0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(56,189,248,0); }
+  100% { box-shadow: 0 0 0 0 rgba(56,189,248,0); }
+}
+
+.header-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+#user-pill{background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.3);border-radius:20px;padding:6px 14px;font-size:.8rem;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:6px;cursor:pointer}
 .upill-dot{width:8px;height:8px;border-radius:50%;}
-.restart-btn{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4);color:#fca5a5;padding:7px 12px;border-radius:20px;font-size:.72rem;font-weight:600;cursor:pointer;}
+.restart-btn{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4);color:#fca5a5;padding:8px 14px;border-radius:20px;font-size:.8rem;font-weight:600;cursor:pointer;}
 
 .page{display:none;position:relative;z-index:1;min-height:calc(100vh - 64px);padding:24px 16px 60px}
 .page.active{display:block}
@@ -149,7 +173,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .bh-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; font-size: 0.85rem; font-weight: 600; }
 .bh-win-amt { font-size: 1.1rem; font-weight: 800; color: var(--green); }
 
-/* ── RESULTS GRID & PANELS (UPDATED) ── */
+/* ── RESULTS GRID & PANELS ── */
 .results-grid { display: flex; gap: 24px; max-width: 1100px; margin: 0 auto; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 .leaderboard-wrap, .community-wrap { flex: 1; min-width: 320px; max-width: 500px; background: rgba(0,0,0,0.25); border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.3); margin-bottom: 40px; }
 .leaderboard-title, .comm-title { font-family: "Bebas Neue", sans-serif; font-size: 1.8rem; letter-spacing: 2px; color: var(--gold); text-align: center; margin-bottom: 20px; }
@@ -166,10 +190,44 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .lb-pts { font-family: "Bebas Neue", sans-serif; font-size: 1.3rem; color: var(--green); background: rgba(34,197,94,0.15); padding: 4px 16px; border-radius: 12px; }
 .lb-bal { color: var(--accent-bet); background: rgba(56,189,248,0.15); }
 
-/* ── MY PREDICTIONS MODAL (RESTORED) ── */
-.my-pred-btn-wrap{max-width:440px;margin:0 auto 36px;text-align:center;}
-.my-pred-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.4);color:var(--gold);border-radius:20px;font-family:"Poppins",sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:.2s;}
-.my-pred-btn:hover{background:rgba(240,180,41,.18);transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,.3);}
+/* ── RESULTS ── */
+.results-page{max-width:960px;margin:0 auto}
+.result-wrap{max-width:500px;margin:0 auto 30px}
+.result-card{background:linear-gradient(160deg,#0d1b3e 0%,#12244f 50%,#0a1630 100%);border:1px solid rgba(240,180,41,.25);border-radius:28px;padding:32px 24px;box-shadow:0 20px 60px rgba(0,0,0,.6);position:relative;overflow:hidden;text-align:center;}
+.result-title{font-family:"Bebas Neue",sans-serif;font-size:2rem;letter-spacing:3px;color:var(--gold);margin-bottom:6px}
+.result-user{font-size:.85rem;color:var(--text-muted);margin-bottom:24px;}
+.done-message{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px;font-weight:600;}
+
+/* ── UI/UX GÜNCELLEMESİ: DEVASA TAHMİNLERİM BUTONU ── */
+.my-pred-btn-wrap {
+  max-width: 500px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+.my-pred-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 18px 24px;
+  background: linear-gradient(135deg, var(--gold2), var(--gold));
+  color: var(--navy);
+  border: none;
+  border-radius: 20px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 8px 25px rgba(240, 180, 41, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.my-pred-btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(240, 180, 41, 0.6);
+}
 
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(5,10,25,.75);z-index:9500;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);}
 .modal-overlay.active{display:flex;}
@@ -181,21 +239,21 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .modal-body{padding:8px 22px 20px;overflow-y:auto;}
 .modal-body::-webkit-scrollbar{width:6px}
 .modal-body::-webkit-scrollbar-thumb{background:rgba(240,180,41,.3);border-radius:4px}
-.modal-summary{text-align:center;font-size:.78rem;color:var(--text-muted);padding:10px 0 16px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:6px;}
-.modal-summary strong{color:var(--gold);font-size:.95rem;}
+.modal-summary{text-align:center;font-size:.85rem;color:var(--text-muted);padding:10px 0 16px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:6px;}
+.modal-summary strong{color:var(--gold);font-size:1rem;}
 
 .pred-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px dashed rgba(255,255,255,.06);}
 .pred-row:last-child{border-bottom:none;}
-.pred-match{display:flex;align-items:center;gap:6px;font-size:.82rem;font-weight:700;flex:1;min-width:0;}
-.pred-match .pflag{font-size:1.05rem;flex-shrink:0;}
+.pred-match{display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:700;flex:1;min-width:0;}
+.pred-match .pflag{font-size:1.15rem;flex-shrink:0;}
 .pred-match .pteams{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pred-status{font-size:.7rem;font-weight:600;color:var(--text-muted);max-width:130px;text-align:right;line-height:1.3;flex-shrink:0;}
-.pred-pts{font-family:"Bebas Neue",sans-serif;font-size:1.05rem;padding:4px 12px;border-radius:10px;min-width:38px;text-align:center;flex-shrink:0;}
+.pred-status{font-size:.75rem;font-weight:600;color:var(--text-muted);max-width:130px;text-align:right;line-height:1.3;flex-shrink:0;}
+.pred-pts{font-family:"Bebas Neue",sans-serif;font-size:1.1rem;padding:4px 12px;border-radius:10px;min-width:38px;text-align:center;flex-shrink:0;}
 .pred-pts.pos{background:rgba(34,197,94,.15);color:var(--green);}
 .pred-pts.zero{background:rgba(239,68,68,.15);color:#fca5a5;}
 .pred-pts.pending{background:rgba(255,255,255,.06);color:var(--text-muted);}
 
-/* ── COMMUNITY VOTES BARS (RESTORED) ── */
+/* ── COMMUNITY VOTES BARS ── */
 .comm-match { margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 16px; }
 .comm-match:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 .comm-teams { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; }
@@ -205,14 +263,6 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .comm-fill.draw { background: var(--draw); }
 .comm-fill.win2 { background: var(--red); }
 .comm-labels { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; margin-top: 6px; }
-
-/* ── RESULTS ── */
-.results-page{max-width:960px;margin:0 auto}
-.result-wrap{max-width:440px;margin:0 auto 20px}
-.result-card{background:linear-gradient(160deg,#0d1b3e 0%,#12244f 50%,#0a1630 100%);border:1px solid rgba(240,180,41,.25);border-radius:28px;padding:32px 24px;box-shadow:0 20px 60px rgba(0,0,0,.6);position:relative;overflow:hidden;text-align:center;}
-.result-title{font-family:"Bebas Neue",sans-serif;font-size:2rem;letter-spacing:3px;color:var(--gold);margin-bottom:6px}
-.result-user{font-size:.78rem;color:var(--text-muted);margin-bottom:24px;}
-.done-message{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px;font-weight:600;}
 
 #wc-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;pointer-events:none;display:flex;flex-direction:column;gap:6px;align-items:center}
 .wc-toast-item{background:rgba(13,27,62,.95);color:#fff;padding:10px 22px;border-radius:22px;font-size:.82rem;backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);}
@@ -240,7 +290,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
   <div class="header-title" id="header-logo">⚽ WC 2026</div>
   <div class="header-tabs">
     <button class="tab-btn active" data-tab="knockout">Çeyrek Final Simüle</button>
-    <button class="tab-btn" data-tab="bet" style="color:var(--accent-bet); border-color:var(--accent-bet);">Bahis (Bet) 🎲</button>
+    <button class="tab-btn tab-btn-bet" data-tab="bet">🎲 BAHİS OYNA (Bet) 🎲</button>
     <button class="tab-btn" data-tab="results">Sonuçlar & Sıralama 🏆</button>
   </div>
   <div class="header-right">
@@ -252,6 +302,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 <div class="layout-wrapper" id="main-layout">
   <div class="main-content">
     
+    <!-- ÇEYREK FİNAL SİMÜLATÖRÜ -->
     <div class="page active" id="page-knockout">
       <div class="gs-title">ÇEYREK FİNAL MAÇLARI</div>
       <div class="gs-subtitle">Münih Saatine Göre (CEST) Ayarlanmıştır</div>
@@ -270,7 +321,8 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
         </div>
         
         <div class="choices" id="choices-wrapper">
-           </div>
+           <!-- Dynamically populated -->
+        </div>
 
         <div class="sim-box" id="sim-box">
           <div class="sim-scoreboard">
@@ -283,6 +335,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
       </div>
     </div>
 
+    <!-- BAHİS (BET) SAYFASI -->
     <div class="page" id="page-bet">
       <div class="bet-container">
         <div class="bet-main">
@@ -296,7 +349,8 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
           
           <div class="gs-title" style="color:var(--accent-bet); text-align:left; margin-bottom:20px;">ÇEYREK FİNAL BÜLTENİ</div>
           <div id="bet-matches-list">
-             </div>
+             <!-- Matches injected here -->
+          </div>
 
           <div class="my-bets-wrap">
             <div class="my-bets-title">Geçmiş Kuponlarım</div>
@@ -331,12 +385,14 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
       </div>
     </div>
 
+    <!-- SONUÇLAR VE LİDERLİK TABLOLARI -->
     <div class="page" id="page-results">
       <div class="results-page">
         <div class="result-wrap" id="my-result-wrap"></div>
         
+        <!-- YENİ BÜYÜK "TAHMİNLERİM" BUTONU -->
         <div class="my-pred-btn-wrap">
-          <button class="my-pred-btn" id="my-pred-toggle-btn">📋 Tahminlerim ve Puanlarım</button>
+          <button class="my-pred-btn" id="my-pred-toggle-btn">📋 Kendi Tahminlerimi ve Puanlarımı Gör</button>
         </div>
         
         <div class="results-grid">
@@ -381,6 +437,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
   </aside>
 </div>
 
+<!-- MODAL HTML -->
 <div class="modal-overlay" id="my-predictions-modal">
   <div class="modal-content">
     <div class="modal-header">
@@ -402,7 +459,6 @@ const FB={apiKey:"AIzaSyCUTBQ5oIgF1GEU8rGj9Mxqz7a2g1Ecswk",authDomain:"timetemp-
 const app=initializeApp(FB);
 const db=getDatabase(app);
 
-// Update DB Paths for Quarter Finals
 const FBP=()=>`worldcup2026-ceyrekfinal/${curUser}`;
 const DB_OFFICIAL = 'worldcup2026-official-ceyrekfinal';
 const DB_USERS = 'worldcup2026-ceyrekfinal';
@@ -792,7 +848,6 @@ function renderStats() {
 }
 
 // ================= BAHİS (BETTING) MANTIĞI =================
-
 function evaluatePick(pickKey, s1, s2, ht1, ht2) {
   if (s1 === undefined || s2 === undefined) return 'pending';
   s1 = Number(s1); s2 = Number(s2);
@@ -904,7 +959,6 @@ function updateSlipPotential() {
 }
 document.getElementById("slip-stake").addEventListener("input", updateSlipPotential);
 
-// GÜVENLİ KUPON YATIRMA
 document.getElementById("place-bet-btn").addEventListener("click", async () => {
   if (betSlip.length === 0) return toast("Kupon boş!");
   const btn = document.getElementById("place-bet-btn");
@@ -1105,7 +1159,7 @@ function renderBetPage() {
   }
 }
 
-// RESTORED: COMMUNITY VOTES LOGIC
+// ================= TOPLULUK TAHMİNLERİ (UI) =================
 function renderCommunityVotes(usersData, officialResults = {}) {
   let matchVotes = {};
   CEYREK_MATCHES.forEach(m => {
@@ -1199,7 +1253,6 @@ async function updateLeaderboards() {
     const officialSnap = await get(ref(db, DB_OFFICIAL));
     officialResults = officialSnap.val() || {}; 
 
-    // RESTORED: Topluluk tahminleri render çağrısı
     renderCommunityVotes(usersData, officialResults);
 
     let predLeaderboard = [];
@@ -1207,7 +1260,7 @@ async function updateLeaderboards() {
 
     for (const [username, userData] of Object.entries(usersData)) {
       let points = 0;
-      let exactScoreHits = 0; // RESTORED: Doğru Skor mantığı
+      let exactScoreHits = 0;
       const userSims = userData.simulationResults || {};
       
       for (const [matchId, officialData] of Object.entries(officialResults)) {
@@ -1223,7 +1276,6 @@ async function updateLeaderboards() {
              if (userWinner === actualWinner) points += 1;
           }
 
-          // RESTORED: Exact Score Check
           if (officialData.s1 !== undefined && officialData.s2 !== undefined) {
             if (Number(userMatchData.s1) === Number(officialData.s1) && Number(userMatchData.s2) === Number(officialData.s2)) {
               exactScoreHits += 1;
@@ -1252,7 +1304,6 @@ async function updateLeaderboards() {
       betLeaderboard.push({ name: username, balance: tempBal });
     }
 
-    // RESTORED: Sort by points, then by exactScoreHits
     predLeaderboard.sort((a, b) => {
       if (b.points !== a.points) return b.points - a.points;
       return b.exactScoreHits - a.exactScoreHits;
@@ -1264,7 +1315,6 @@ async function updateLeaderboards() {
       lbContainer.innerHTML = predLeaderboard.map((user, index) => {
         let rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : ''));
         let rankDisplay = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : `${index + 1}.`));
-        // RESTORED: Exact Score Badge
         let exactScoreBadge = user.exactScoreHits > 0 ? `<div style="font-size: 0.65rem; font-weight: 600; color: #fbbf24; margin-top: 2px;">🎯 ${user.exactScoreHits} Doğru Skor </div>` : '';
 
         return `
@@ -1314,7 +1364,7 @@ function renderResults() {
     </div>`;
 }
 
-// RESTORED: TAHMİNLERİM MODAL LOGIC
+// ================= TAHMİNLERİM MODAL =================
 async function openMyPredictionsModal() {
   const modal = document.getElementById("my-predictions-modal");
   modal.classList.add("active");
