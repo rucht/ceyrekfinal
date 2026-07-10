@@ -1341,6 +1341,7 @@ async function updateLeaderboards() {
           if (off && off.s1 !== undefined) {
              legStatus = evaluatePick(leg.pick, off.s1, off.s2, off.ht1, off.ht2);
           }
+          leg.status = legStatus;
           if (legStatus === 'lost') anyLost = true;
           if (legStatus === 'pending') allWon = false;
         });
