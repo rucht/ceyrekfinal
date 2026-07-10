@@ -1243,7 +1243,7 @@ async function updateLeaderboards() {
     const usersData = usersSnap.val() || {};
     
     const officialSnap = await get(ref(db, DB_OFFICIAL));
-    officialResults = officialSnap.val() || {}; 
+    const officialResults = officialSnap.val() || {}; 
 
     renderCommunityVotes(usersData, officialResults);
 
@@ -1280,7 +1280,7 @@ async function updateLeaderboards() {
 
       let tempBets = userData.bets || [];
       let tempBal = 100.00;
-      let totalWinnings = 0; // YENİ: Toplam Kazanç değişkeni
+      let totalWinnings = 0; // Toplam Kazanç değişkeni
       
       tempBets.forEach(bet => {
         tempBal -= bet.stake;
@@ -1298,7 +1298,7 @@ async function updateLeaderboards() {
         if (!anyLost && allWon) {
             let winAmount = bet.stake * bet.totalOdd;
             tempBal += winAmount;
-            totalWinnings += winAmount; // YENİ: Tutan kuponun kazancını toplama ekle
+            totalWinnings += winAmount; // Tutan kuponun kazancını toplama ekle
             
             allWinningBets.push({
                 user: username,
@@ -1310,16 +1310,40 @@ async function updateLeaderboards() {
             });
         }
       });
-      // YENİ: totalWinnings değerini diziye dahil et
       betLeaderboard.push({ name: username, balance: tempBal, winnings: totalWinnings });
-    } // <-- Döngünün sonu
+    }
 
-    // ... (predLeaderboard sıralaması aynı kalacak)
+    // Puan Sıralaması Render İşlemi
+    predLeaderboard.sort((a, b) => {
+      if (b.points !== a.points) return b.points - a.points;
+      return b.exactScoreHits - a.exactScoreHits;
+    });
 
-    // YENİ: Artık bakiyeye göre değil, "winnings" (toplam kazanç) değerine göre sıralıyoruz
+    if (predLeaderboard.length === 0) {
+      lbContainer.innerHTML = `<div style="text-align:center; color:var(--text-muted);">Henüz veri yok.</div>`;
+    } else {
+      lbContainer.innerHTML = predLeaderboard.map((user, index) => {
+        let rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : ''));
+        let rankDisplay = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : `${index + 1}.`));
+        let exactScoreBadge = user.exactScoreHits > 0 ? `<div style="font-size: 0.65rem; font-weight: 600; color: #fbbf24; margin-top: 2px;">🎯 ${user.exactScoreHits} Doğru Skor </div>` : '';
+
+        return `
+          <div class="lb-item">
+            <div class="lb-rank ${rankClass}">${rankDisplay}</div>
+            <div class="lb-name">
+              <div>${user.name}</div>
+              ${exactScoreBadge}
+            </div>
+            <div class="lb-pts">${user.points} PT</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Kazanç Sıralaması Render İşlemi
     betLeaderboard.sort((a, b) => {
         if (b.winnings !== a.winnings) return b.winnings - a.winnings;
-        return b.balance - a.balance; // Eşitlik durumunda bakiye belirleyici olsun
+        return b.balance - a.balance; // Kazanç eşitse bakiye belirleyici olsun
     });
 
     if (betLeaderboard.length === 0) {
@@ -1329,7 +1353,6 @@ async function updateLeaderboards() {
         let rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : ''));
         let rankDisplay = index === 0 ? '👑' : (index === 1 ? '💸' : (index === 2 ? '💵' : `${index + 1}.`));
         
-        // YENİ: İsim altında ufak güncel bakiye gösterimi, sağda ise kocaman toplam kazanç yazacak
         return `
           <div class="lb-item">
             <div class="lb-rank ${rankClass}">${rankDisplay}</div>
@@ -1338,23 +1361,6 @@ async function updateLeaderboards() {
               <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 2px;">Bakiye: ${user.balance.toFixed(2)} 🪙</div>
             </div>
             <div class="lb-pts lb-bal">+${user.winnings.toFixed(2)}</div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    betLeaderboard.sort((a, b) => b.balance - a.balance);
-    if (betLeaderboard.length === 0) {
-      betLbContainer.innerHTML = `<div style="text-align:center; color:var(--text-muted);">Henüz veri yok.</div>`;
-    } else {
-      betLbContainer.innerHTML = betLeaderboard.map((user, index) => {
-        let rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : ''));
-        let rankDisplay = index === 0 ? '👑' : (index === 1 ? '💸' : (index === 2 ? '💵' : `${index + 1}.`));
-        return `
-          <div class="lb-item">
-            <div class="lb-rank ${rankClass}">${rankDisplay}</div>
-            <div class="lb-name">${user.name}</div>
-            <div class="lb-pts lb-bal">${user.balance.toFixed(2)} 🪙</div>
           </div>
         `;
       }).join("");
