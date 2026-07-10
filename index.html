@@ -156,7 +156,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .bh-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; font-size: 0.85rem; font-weight: 600; }
 .bh-win-amt { font-size: 1.1rem; font-weight: 800; color: var(--green); }
 
-/* ── YENİ GRID YAPISI (RESULTS) ── */
+/* ── GRID YAPISI (RESULTS) ── */
 .results-page { width: 100%; }
 .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; width: 100%; align-items: start; }
 .results-left-col { display: flex; flex-direction: column; gap: 24px; }
@@ -187,6 +187,20 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .my-pred-btn-wrap { width: 100%; text-align: center; }
 .my-pred-btn { display: flex; justify-content: center; align-items: center; gap: 12px; width: 100%; padding: 18px 24px; background: linear-gradient(135deg, var(--gold2), var(--gold)); color: var(--navy); border: none; border-radius: 20px; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 1.15rem; cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 25px rgba(240, 180, 41, 0.4); text-transform: uppercase; letter-spacing: 1px; }
 .my-pred-btn:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 35px rgba(240, 180, 41, 0.6); }
+
+/* ── YENİ: TUTAN KUPONLAR (ŞEREF KÜRSÜSÜ) KARTLARI ── */
+.winning-bets-wrap { width: 100%; margin-top: 40px; background: rgba(0,0,0,0.25); border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.3); }
+.winning-bets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 16px; }
+.win-bet-card { background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 16px; padding: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.2s; }
+.win-bet-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(34, 197, 94, 0.15); }
+.win-bet-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 8px; margin-bottom: 12px; }
+.win-bet-user { font-weight: 700; color: var(--gold); font-size: 1rem; }
+.win-bet-odd { font-weight: 800; color: #fff; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 8px; font-size: 0.8rem;}
+.win-bet-leg { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; }
+.win-bet-leg-pick { color: var(--text); font-weight: 600; }
+.win-bet-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; }
+.win-bet-stake { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+.win-bet-win { font-size: 1.1rem; font-weight: 800; color: var(--green); }
 
 /* ── YASAL UYARI ── */
 .legal-disclaimer { text-align: center; font-size: 0.75rem; color: rgba(255,255,255,0.3); padding: 20px 16px; margin-top: auto; border-top: 1px dashed rgba(255,255,255,0.08); font-family: "Poppins", sans-serif; width: 100%; }
@@ -385,6 +399,15 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
           </div>
 
         </div>
+
+        <!-- YENİ BÖLÜM: TUTAN KUPONLAR ŞEREF KÜRSÜSÜ -->
+        <div class="winning-bets-wrap">
+          <div class="comm-title" style="color: var(--green);">🔥 TUTAN KUPONLAR (ŞEREF KÜRSÜSÜ)</div>
+          <div id="winning-bets-list" class="winning-bets-grid">
+            <div style="text-align:center; color:var(--text-muted); font-size:0.9rem; padding: 20px; width: 100%;">Veriler yükleniyor...</div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -1226,6 +1249,7 @@ async function updateLeaderboards() {
 
     let predLeaderboard = [];
     let betLeaderboard = [];
+    let allWinningBets = []; // TUTAN KUPONLAR DİZİSİ
 
     for (const [username, userData] of Object.entries(usersData)) {
       let points = 0;
@@ -1268,7 +1292,19 @@ async function updateLeaderboards() {
           if (legStatus === 'lost') anyLost = true;
           if (legStatus === 'pending') allWon = false;
         });
-        if (!anyLost && allWon) tempBal += (bet.stake * bet.totalOdd);
+        
+        if (!anyLost && allWon) {
+            tempBal += (bet.stake * bet.totalOdd);
+            // KAZANAN KUPONU ŞEREF KÜRSÜSÜNE EKLE
+            allWinningBets.push({
+                user: username,
+                stake: bet.stake,
+                totalOdd: bet.totalOdd,
+                winAmount: bet.stake * bet.totalOdd,
+                legs: bet.legs,
+                timestamp: bet.timestamp || 0
+            });
+        }
       });
       betLeaderboard.push({ name: username, balance: tempBal });
     }
@@ -1314,6 +1350,39 @@ async function updateLeaderboards() {
           </div>
         `;
       }).join("");
+    }
+
+    // TUTAN KUPONLAR RENDER İŞLEMİ
+    allWinningBets.sort((a, b) => b.winAmount - a.winAmount); // En yüksek kazananı en başa koy
+    const winBetsContainer = document.getElementById("winning-bets-list");
+    
+    if(allWinningBets.length === 0) {
+        winBetsContainer.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:0.9rem; padding: 20px; width: 100%;">Henüz sonuçlanmış kazanan kupon yok.</div>`;
+    } else {
+        winBetsContainer.innerHTML = allWinningBets.map(b => {
+            const legsHtml = b.legs.map(leg => `
+                <div class="win-bet-leg">
+                    <span>${leg.t1} - ${leg.t2}</span>
+                    <span class="win-bet-leg-pick">${MARKET_NAMES[leg.pick] || leg.pick} ✅</span>
+                </div>
+            `).join("");
+
+            return `
+                <div class="win-bet-card">
+                    <div class="win-bet-header">
+                        <div class="win-bet-user">👤 ${b.user}</div>
+                        <div class="win-bet-odd">${b.totalOdd.toFixed(2)} Oran</div>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        ${legsHtml}
+                    </div>
+                    <div class="win-bet-footer">
+                        <div class="win-bet-stake">Yatırılan: ${b.stake.toFixed(2)}</div>
+                        <div class="win-bet-win">+${b.winAmount.toFixed(2)} 🪙</div>
+                    </div>
+                </div>
+            `;
+        }).join("");
     }
 
   } catch (error) {
