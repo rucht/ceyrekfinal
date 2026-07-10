@@ -392,7 +392,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 
           <!-- SAĞ KOLON: Oyun Bakiyesi Sıralaması -->
           <div class="leaderboard-wrap" style="border-color: rgba(56,189,248,0.3);">
-            <div class="leaderboard-title bet-lb-title">💰 OYUN BAKİYESİ SIRALAMASI</div>
+            <div class="leaderboard-title bet-lb-title">💰 TOPLAM KAZANÇ SIRALAMASI</div>
             <div id="bet-leaderboard-list">
               <div style="text-align:center; color:var(--text-muted); font-size:0.9rem;">Sıralama hesaplanıyor...</div>
             </div>
@@ -1280,6 +1280,8 @@ async function updateLeaderboards() {
 
       let tempBets = userData.bets || [];
       let tempBal = 100.00;
+      let totalWinnings = 0; // YENİ: Toplam Kazanç değişkeni
+      
       tempBets.forEach(bet => {
         tempBal -= bet.stake;
         let allWon = true; let anyLost = false;
@@ -1294,42 +1296,48 @@ async function updateLeaderboards() {
         });
         
         if (!anyLost && allWon) {
-            tempBal += (bet.stake * bet.totalOdd);
-            // KAZANAN KUPONU ŞEREF KÜRSÜSÜNE EKLE
+            let winAmount = bet.stake * bet.totalOdd;
+            tempBal += winAmount;
+            totalWinnings += winAmount; // YENİ: Tutan kuponun kazancını toplama ekle
+            
             allWinningBets.push({
                 user: username,
                 stake: bet.stake,
                 totalOdd: bet.totalOdd,
-                winAmount: bet.stake * bet.totalOdd,
+                winAmount: winAmount,
                 legs: bet.legs,
                 timestamp: bet.timestamp || 0
             });
         }
       });
-      betLeaderboard.push({ name: username, balance: tempBal });
-    }
+      // YENİ: totalWinnings değerini diziye dahil et
+      betLeaderboard.push({ name: username, balance: tempBal, winnings: totalWinnings });
+    } // <-- Döngünün sonu
 
-    predLeaderboard.sort((a, b) => {
-      if (b.points !== a.points) return b.points - a.points;
-      return b.exactScoreHits - a.exactScoreHits;
+    // ... (predLeaderboard sıralaması aynı kalacak)
+
+    // YENİ: Artık bakiyeye göre değil, "winnings" (toplam kazanç) değerine göre sıralıyoruz
+    betLeaderboard.sort((a, b) => {
+        if (b.winnings !== a.winnings) return b.winnings - a.winnings;
+        return b.balance - a.balance; // Eşitlik durumunda bakiye belirleyici olsun
     });
 
-    if (predLeaderboard.length === 0) {
-      lbContainer.innerHTML = `<div style="text-align:center; color:var(--text-muted);">Henüz veri yok.</div>`;
+    if (betLeaderboard.length === 0) {
+      betLbContainer.innerHTML = `<div style="text-align:center; color:var(--text-muted);">Henüz veri yok.</div>`;
     } else {
-      lbContainer.innerHTML = predLeaderboard.map((user, index) => {
+      betLbContainer.innerHTML = betLeaderboard.map((user, index) => {
         let rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : ''));
-        let rankDisplay = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : `${index + 1}.`));
-        let exactScoreBadge = user.exactScoreHits > 0 ? `<div style="font-size: 0.65rem; font-weight: 600; color: #fbbf24; margin-top: 2px;">🎯 ${user.exactScoreHits} Doğru Skor </div>` : '';
-
+        let rankDisplay = index === 0 ? '👑' : (index === 1 ? '💸' : (index === 2 ? '💵' : `${index + 1}.`));
+        
+        // YENİ: İsim altında ufak güncel bakiye gösterimi, sağda ise kocaman toplam kazanç yazacak
         return `
           <div class="lb-item">
             <div class="lb-rank ${rankClass}">${rankDisplay}</div>
             <div class="lb-name">
               <div>${user.name}</div>
-              ${exactScoreBadge}
+              <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 2px;">Bakiye: ${user.balance.toFixed(2)} 🪙</div>
             </div>
-            <div class="lb-pts">${user.points} PT</div>
+            <div class="lb-pts lb-bal">+${user.winnings.toFixed(2)}</div>
           </div>
         `;
       }).join("");
