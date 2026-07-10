@@ -833,12 +833,41 @@ document.getElementById("next-match-btn").addEventListener("click", ()=>{
   renderMatchCard(currentMatchIdx);
 });
 
+// GERÇEK TURNUVA İSTATİSTİKLERİ (Sabit Veri)
+const GLOBAL_TOP_SCORERS = [
+  { name: "Kylian Mbappé", teamFlag: "🇫🇷", goals: 8 },
+  { name: "Lionel Messi", teamFlag: "🇦🇷", goals: 8 },
+  { name: "Erling Haaland", teamFlag: "🇳🇴", goals: 7 },
+  { name: "Harry Kane", teamFlag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", goals: 6 },
+  { name: "Ousmane Dembélé", teamFlag: "🇫🇷", goals: 5 },
+  { name: "Ismaila Sarr", teamFlag: "🇸🇳", goals: 4 },
+  { name: "Mikel Oyarzabal", teamFlag: "🇪🇸", goals: 4 },
+  { name: "Julian Quinones", teamFlag: "🇲🇽", goals: 4 },
+  { name: "Jude Bellingham", teamFlag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", goals: 4 },
+  { name: "Vinícius Jr", teamFlag: "🇧🇷", goals: 4 }
+];
+
+const GLOBAL_TOP_ASSISTS = [
+  { name: "Michael Olise", teamFlag: "🇫🇷", assists: 5 },
+  { name: "Bruno Guimarães", teamFlag: "🇧🇷", assists: 4 },
+  { name: "Brahim Diaz", teamFlag: "🇲🇦", assists: 4 },
+  { name: "Kylian Mbappé", teamFlag: "🇫🇷", assists: 3 },
+  { name: "Alexander Isak", teamFlag: "🇸🇪", assists: 3 },
+  { name: "Bukayo Saka", teamFlag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", assists: 3 },
+  { name: "Andreas Schjelderup", teamFlag: "🇳🇴", assists: 3 },
+  { name: "Martin Ødegaard", teamFlag: "🇳🇴", assists: 3 },
+  { name: "Florian Wirtz", teamFlag: "🇩🇪", assists: 3 },
+  { name: "Roberto Alvarado", teamFlag: "🇲🇽", assists: 3 }
+];
+
 function renderStats() {
-  const arr = Object.keys(playerStats).map(p => ({name: p, ...playerStats[p]}));
-  const topScorers = [...arr].sort((a,b) => b.goals - a.goals || b.assists - a.assists).slice(0, 10);
-  const topAssists = [...arr].sort((a,b) => b.assists - a.assists || b.goals - a.goals).slice(0, 10);
-  document.getElementById("top-scorers-list").innerHTML = topScorers.map(p => `<div class="stat-item"><div class="stat-player"><span>${flag(p.teamName)}</span> <span>${p.name}</span></div><div class="stat-val">${p.goals}</div></div>`).join("");
-  document.getElementById("top-assists-list").innerHTML = topAssists.map(p => `<div class="stat-item"><div class="stat-player"><span>${flag(p.teamName)}</span> <span>${p.name}</span></div><div class="stat-val">${p.assists}</div></div>`).join("");
+  document.getElementById("top-scorers-list").innerHTML = GLOBAL_TOP_SCORERS.map(p => 
+    `<div class="stat-item"><div class="stat-player"><span>${p.teamFlag}</span> <span>${p.name}</span></div><div class="stat-val">${p.goals}</div></div>`
+  ).join("");
+  
+  document.getElementById("top-assists-list").innerHTML = GLOBAL_TOP_ASSISTS.map(p => 
+    `<div class="stat-item"><div class="stat-player"><span>${p.teamFlag}</span> <span>${p.name}</span></div><div class="stat-val">${p.assists}</div></div>`
+  ).join("");
 }
 
 // ================= KUPON OYUNU MANTIĞI =================
