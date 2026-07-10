@@ -402,7 +402,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 
         <!-- YENİ BÖLÜM: TUTAN KUPONLAR ŞEREF KÜRSÜSÜ -->
         <div class="winning-bets-wrap">
-          <div class="comm-title" style="color: var(--green);">🔥 TUTAN KUPONLAR (ŞEREF KÜRSÜSÜ)</div>
+          <div class="comm-title" style="color: var(--green);">🔥 TUTAN KUPONLAR</div>
           <div id="winning-bets-list" class="winning-bets-grid">
             <div style="text-align:center; color:var(--text-muted); font-size:0.9rem; padding: 20px; width: 100%;">Veriler yükleniyor...</div>
           </div>
@@ -1512,6 +1512,11 @@ async function loadAndInit() {
     }
     renderStats();
     renderMatchCard(currentMatchIdx);
+
+    // GÜNCELLEME: Tahminler bittiyse giriş ekranını direkt Sonuçlar sekmesi yap
+    if (currentMatchIdx >= 4) {
+      switchTab("results");
+    }
   } catch(e) {
     console.error(e);
   }
